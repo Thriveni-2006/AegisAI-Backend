@@ -30,37 +30,30 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        // Public APIs
+                        // Root & Health (important for deployment verification)
+                        .requestMatchers("/", "/health").permitAll()
+
+                        // Authentication APIs
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        // Public APIs
                         .requestMatchers("/api/user/**").permitAll()
-
-                        // Email Scanner
                         .requestMatchers("/api/email/**").permitAll()
-
-                        // URL Scanner
                         .requestMatchers("/api/url/**").permitAll()
-
-                        // Dashboard
                         .requestMatchers("/api/dashboard/**").permitAll()
-
-                        // Notifications
                         .requestMatchers("/api/notifications/**").permitAll()
-
-                        // Incident APIs
                         .requestMatchers("/api/incidents/**").permitAll()
-
                         .requestMatchers("/api/reports/**").permitAll()
-
-                        // Threat APIs
                         .requestMatchers("/api/threat/**").permitAll()
 
-                        // Swagger
+                        // Swagger / OpenAPI
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
 
+                        // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter,
