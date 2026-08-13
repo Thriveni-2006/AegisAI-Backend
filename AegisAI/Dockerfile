@@ -1,6 +1,7 @@
 FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
+
 COPY . .
 
 RUN chmod +x mvnw 2>/dev/null || true
